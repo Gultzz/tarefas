@@ -1,107 +1,124 @@
-var input = document.getElementById('input');
-input.addEventListener('focus', function () { // Focus quer dizer que o campo foi focado
-    addEventListener('keydown', seila); // keydown, keyup e keypress para a tecla selecionada
-});
-input.addEventListener('blur', function () { // blur quer dizer que o campo foi desfocado
-    console.log('input Desfocado');
-});
-var ctrl = false;
-function seila(event) {
-    console.log("O código da tecla clicado é " + event.keyCode);
-    if (event.keyCode == 17) {
-        ctrl = true;
+// var input = document.getElementById('input');
+// input.addEventListener('focus', function () { // Focus quer dizer que o campo foi focado
+//     addEventListener('keydown', seila); // keydown, keyup e keypress para a tecla selecionada
+// });
+// input.addEventListener('blur', function () { // blur quer dizer que o campo foi desfocado
+//     console.log('input Desfocado');
+// });
+// var ctrl = false;
+// function seila(event) {
+//     console.log("O código da tecla clicado é " + event.keyCode);
+//     if (event.keyCode == 17) {
+//         ctrl = true;
+//     }
+//     if (ctrl == true && event.keyCode == 65) {
+//         console.log("CTRL + A");
+//         ctrl = false;
+//     }
+//     console.log(ctrl);
+// }
+
+
+// //TODO          Estilo Classe
+
+// function Carro() {
+//     this.name;
+//     this.marca;
+//     this.modelo;
+//     this.velocidade;
+// }
+
+// var carro1 = new Carro();
+// carro1.marca = "seila";
+// console.log(carro1.marca);
+
+
+
+// function teste2() {
+//     var i = document.getElementById("i");
+//     // setTimeout(()=>{
+//     //         console.log(i.value);
+//     //         teste2();
+//     // },1000);
+
+//     setInterval(() => {
+//         console.log(i.value);
+//     }, 1000);
+// }
+// teste2();
+// function validar() {
+//     var i = document.getElementById("i");
+//     if (i.value.trim() == "") {
+//         i.style.backgroundColor = "red";
+//         alert("Digite uma senha valida para enviar com sucesso.");
+//         return false;
+//     } else if (i.value.length < 8) {
+//         alert("Digite uma senha maior.");
+//         return false;
+//     }else {
+//         alert("Formulario enviado com sucesso.");
+//         return true;
+//     }
+// }
+
+
+
+var lista = JSON.parse(localStorage.listaInteira);
+var tarefaValor = document.getElementById("tarefaInput");
+var listaAdd = document.querySelector("#div ul");
+var botao = document.getElementById('botao');
+
+function RenderList(){
+    listaAdd.innerHTML = '';
+    for(item of lista){
+
+        var liElement = document.createElement('li');
+        liElement.classList.add('itemLista');
+        var liText = document.createTextNode(item);
+
+        var posicao = lista.indexOf(item);
+
+        var linkElement = document.createElement('a');
+        linkElement.setAttribute('href', '#');
+        linkElement.setAttribute('onclick', "deletarItem("+posicao+")");
+        linkElement.setAttribute('style', 'padding:10px 15px;background-color:rgba(255,0,0,0.8);color: #fff;font-family: sand-serif;');
+        linkElement.innerHTML = "Excluir";
+
+        listaAdd.appendChild(liElement);
+        liElement.appendChild(liText);
+        liElement.appendChild(linkElement);
     }
-    if (ctrl == true && event.keyCode == 65) {
-        console.log("CTRL + A");
-        ctrl = false;
-    }
-    console.log(ctrl);
+    salvarDados();
 }
+RenderList();
 
-
-//TODO          Estilo Classe
-
-function Carro() {
-    this.name;
-    this.marca;
-    this.modelo;
-    this.velocidade;
-}
-
-var carro1 = new Carro();
-carro1.marca = "seila";
-console.log(carro1.marca);
-
-
-
-function teste2() {
-    var i = document.getElementById("i");
-    // setTimeout(()=>{
-    //         console.log(i.value);
-    //         teste2();
-    // },1000);
-
-    setInterval(() => {
-        console.log(i.value);
-    }, 1000);
-}
-teste2();
-function validar() {
-    var i = document.getElementById("i");
-    if (i.value.trim() == "") {
-        i.style.backgroundColor = "red";
-        alert("Digite uma senha valida para enviar com sucesso.");
-        return false;
-    } else if (i.value.length < 8) {
-        alert("Digite uma senha maior.");
-        return false;
-    }else {
-        alert("Formulario enviado com sucesso.");
-        return true;
+function adicionarItem(){
+    var itemText = tarefaValor.value;
+    if(itemText.trim().length >= 1){
+        lista.push(itemText);
+        RenderList();
+        salvarDados();
     }
 }
-
-var arr = [1,2,3,4,5];
-
-var newArrayMap = arr.map(function(item, index){ // map percorre todos os itens de um array e retorna alguma coisa
-    return item + index;
-});
-console.log(newArrayMap);
-
-var newArrayReduce = arr.reduce(function(item, proximo){ //dá para somar todos.
-    return item + proximo;
-});
-console.log(newArrayReduce);
-
-var newArrayFind = arr.find(function(item){ // find percorre array e ve se tem algo nele
-    return item === 5;
-});
-console.log(newArrayFind);
-
-
-
-// teste de endsWich e StartWich // verifica se inicia com uma certa letra(Numero) ou termina com uma certa letra(Numero)
-var name2 = "Gustavo";
-console.log(name2.startsWith('G') + " " + name2.endsWith('o'));
-
-if (name2.startsWith('G') && name2.endsWith('o')) {
-    console.log("Começa com G e termina com O");
+botao.addEventListener('click', adicionarItem);
+botao.addEventListener('click', limparInput("tarefaInput"));
+function deletarItem(position){
+    lista.splice(position,1);
+    RenderList();
+    salvarDados();
 }
+function salvarDados(){
+    localStorage.listaInteira = JSON.stringify(lista);
+}
+addEventListener('keypress', (event)=>{
+    if(event.keyCode == 13){
+        adicionarItem();
+        limparInput("tarefaInput");
+    }
+});
 
 
-
-// não funciona com array
-// var array2 = ['matheus', 'gustavo', 'lucas', 'joao'];
-// console.log(array2.endsWith('o'));
-
-var array3 = [
-    { nome: "Lucas", idade: 19 },
-    { nome: "Gustavo", idade: 17 },
-    { nome: "Adão", idade: 22 }
-];
-
-var some = array3.some(pessoa => pessoa.nome === 'Gustavo'); //some() Verifica se existe pelo menos um // verifica se existe pelo menos um 'Gustavo'
-console.log(some);
-
-var every = array3.every(pessoa => pessoa.idade >= 18); //some() Verifica se existe pelo menos um // verifica se todos são maiores de 18 anos
-console.log(every);
+function limparInput(name) {
+  var tarefas = document.querySelectorAll("input[id='" + name + "']");
+  [].map.call(tarefas, tarefaInput => tarefaInput.value = '');
+}
