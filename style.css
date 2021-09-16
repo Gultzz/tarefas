@@ -1,0 +1,25 @@
+*{
+    width: 500px;
+    max-width: 500px;
+}
+body{
+    background-color: #101025;
+    
+}
+input{
+    padding: 20px;
+    border: 2px solid #101025;
+    outline: none;
+    margin: 10px 0px 50px 0px;
+}
+button{
+    padding: 20px;
+    border: 2px solid #101025;
+    outline: none;
+    margin: 10px;
+}
+#form{
+
+    display: flex;
+    flex-direction: column;
+}
